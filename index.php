@@ -19,3 +19,10 @@ $date = date('l, F j, Y - h:i A');
     <p><a href="logout.php">Logout</a></p>
 </body>
 </html>
+=======
+<?php 
+
+require_once 'app/init.php';
+
+$app = new App;
+
