@@ -10,4 +10,5 @@ class Home extends Controller {
 	    die;
     }
 
+  
 }
