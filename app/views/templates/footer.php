@@ -1,13 +1,27 @@
-<footer class="footer">    
-    <div class="row">
-        <div class="col-lg-12">
-            <p>Copyright &copy; <?php echo date('Y'); ?> </p>
+    </main>
+
+    <footer class="footer bg-white border-top mt-5">
+        <div class="container py-4">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p class="mb-0 text-muted">
+                        <i class="bi bi-film me-2"></i>
+                        Movie Search & Reviews &copy; <?php echo date('Y'); ?>
+                    </p>
+                </div>
+                <div class="col-lg-6 text-lg-end">
+                    <p class="mb-0 text-muted">
+                        <small>
+                            Powered by <a href="https://www.omdbapi.com/" target="_blank" class="text-decoration-none">OMDB API</a> 
+                            and <a href="https://gemini.google.com/" target="_blank" class="text-decoration-none">Google Gemini</a>
+                        </small>
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-</body>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
 </html>

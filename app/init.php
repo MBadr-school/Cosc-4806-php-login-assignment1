@@ -13,3 +13,8 @@ require_once 'core/Controller.php';
 require_once 'core/config.php';
 require_once 'database.php';
 
+// Include movie application services and models
+require_once 'services/OmdbService.php';
+require_once 'services/GeminiService.php';
+require_once 'models/Movie.php';
+
