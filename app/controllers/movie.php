@@ -176,7 +176,7 @@ class MovieController extends Controller {
             // Generate or get cached review
             $review = $this->geminiService->getOrGenerateReview($movie);
 
-            if ($review) {
+            if ($review && strpos($review, 'Gemini error:') !== 0) {
                 // Update rate limit
                 $this->movieModel->updateReviewRateLimit($userIp);
 
@@ -186,10 +186,15 @@ class MovieController extends Controller {
                     'movie_title' => $movie['Title']
                 ]);
             } else {
-                echo json_encode(['error' => 'Failed to generate review. Please try again later.']);
+                echo json_encode(['error' => is_string($review) ? $review : 'Failed to generate review. Please try again later.']);
             }
         } catch (Exception $e) {
-            echo json_encode(['error' => 'Review generation failed. Please try again.']);
+            error_log('Review generation error: ' . $e->getMessage());
+            if (strpos($e->getMessage(), 'HTTP Error: 403') !== false) {
+                echo json_encode(['error' => 'API key error. Please check your Gemini API key configuration.']);
+            } else {
+                echo json_encode(['error' => 'Review generation failed: ' . $e->getMessage()]);
+            }
         }
     }
 

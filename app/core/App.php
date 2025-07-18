@@ -4,7 +4,7 @@ class App {
 
     protected $controller = 'movie';
     protected $method = 'index';
-    protected $special_url = ['apply', 'movie'];
+    protected $special_url = ['apply', 'movie', 'signup', 'login'];
     protected $params = [];
 
     public function __construct() {
@@ -63,12 +63,6 @@ class App {
         // This will rebase the params to a new array (starting at 0)
         // if params exist
         $this->params = $url ? array_values($url) : [];
-
-        // Debug: Check if controller and method exist
-        if (!method_exists($this->controller, $this->method)) {
-            die("Error: Method {$this->method} not found in controller " . get_class($this->controller));
-        }
-
         call_user_func_array([$this->controller, $this->method], $this->params);		
     }
 

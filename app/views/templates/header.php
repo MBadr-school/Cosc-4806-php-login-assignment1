@@ -109,6 +109,11 @@
                                 <i class="bi bi-box-arrow-in-right me-1"></i> Login
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/signup">
+                                <i class="bi bi-person-plus me-1"></i> Sign Up
+                            </a>
+                        </li>
                     <?php endif; ?>
                 </ul>
             </div>

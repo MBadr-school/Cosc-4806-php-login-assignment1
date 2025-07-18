@@ -2,7 +2,7 @@
 
 class GeminiService {
     private $apiKey;
-    private $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+    private $baseUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
     public function __construct() {
         $this->apiKey = GEMINI_API_KEY;
@@ -31,7 +31,7 @@ class GeminiService {
             return false;
         } catch (Exception $e) {
             error_log('Gemini API Error: ' . $e->getMessage());
-            return false;
+            return 'Gemini error: ' . $e->getMessage();
         }
     }
 
@@ -89,30 +89,6 @@ Write in a conversational yet professional tone that would help someone decide w
                         ]
                     ]
                 ]
-            ],
-            'generationConfig' => [
-                'temperature' => 0.7,
-                'topK' => 40,
-                'topP' => 0.95,
-                'maxOutputTokens' => 1024,
-            ],
-            'safetySettings' => [
-                [
-                    'category' => 'HARM_CATEGORY_HARASSMENT',
-                    'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
-                ],
-                [
-                    'category' => 'HARM_CATEGORY_HATE_SPEECH',
-                    'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
-                ],
-                [
-                    'category' => 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-                    'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
-                ],
-                [
-                    'category' => 'HARM_CATEGORY_DANGEROUS_CONTENT',
-                    'threshold' => 'BLOCK_MEDIUM_AND_ABOVE'
-                ]
             ]
         ];
 
@@ -132,6 +108,7 @@ Write in a conversational yet professional tone that would help someone decide w
         ]);
 
         $response = curl_exec($ch);
+        file_put_contents(__DIR__ . '/gemini_debug.log', $response . PHP_EOL, FILE_APPEND);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $error = curl_error($ch);
 
@@ -142,13 +119,20 @@ Write in a conversational yet professional tone that would help someone decide w
         }
 
         if ($httpCode !== 200) {
+            error_log('Gemini API Error Response: ' . $response);
             throw new Exception('HTTP Error: ' . $httpCode . ' - ' . $response);
         }
 
         $decodedResponse = json_decode($response, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
+            error_log('Gemini API JSON Error: ' . json_last_error_msg() . ' - Response: ' . $response);
             throw new Exception('JSON Decode Error: ' . json_last_error_msg());
+        }
+
+        if (!isset($decodedResponse['candidates'][0]['content']['parts'][0]['text'])) {
+            error_log('Unexpected Gemini API Response Structure: ' . json_encode($decodedResponse));
+            throw new Exception('Unexpected API response structure');
         }
 
         return $decodedResponse;
@@ -179,7 +163,7 @@ Write in a conversational yet professional tone that would help someone decide w
             // Generate new review
             $review = $this->generateMovieReview($movieData);
 
-            if ($review) {
+            if ($review && strpos($review, 'Gemini error:') !== 0) {
                 // Cache the review
                 $stmt = $dbh->prepare("INSERT INTO cached_reviews (movie_id, movie_title, review_text) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE review_text = VALUES(review_text)");
                 $stmt->execute([$movieData['imdbID'], $movieData['Title'], $review]);
@@ -187,7 +171,7 @@ Write in a conversational yet professional tone that would help someone decide w
                 return $review;
             }
 
-            return false;
+            return $review; // Return the error message if it's an error
         } catch (Exception $e) {
             error_log('Review caching error: ' . $e->getMessage());
             return false;
