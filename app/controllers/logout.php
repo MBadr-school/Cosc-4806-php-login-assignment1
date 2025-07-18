@@ -1,6 +1,6 @@
 <?php
 
-class Logout extends Controller {
+class LogoutController extends Controller {
 
     public function index() {		
         session_start();

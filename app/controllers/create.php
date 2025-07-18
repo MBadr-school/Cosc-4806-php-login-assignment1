@@ -1,8 +1,8 @@
 <?php
 
-class Create extends Controller {
+class CreateController extends Controller {
 
     public function index() {		
-	    $this->view('create/index');
+      $this->view('create/index');
     }
 }

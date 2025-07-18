@@ -6,7 +6,7 @@
                 <div class="col-lg-6">
                     <p class="mb-0 text-muted">
                         <i class="bi bi-film me-2"></i>
-                        Movie Search & Reviews &copy; <?php echo date('Y'); ?>
+                        Movie Search & Reviews &copy; by Badar <?php echo date('Y'); ?>
                     </p>
                 </div>
                 <div class="col-lg-6 text-lg-end">

@@ -1,6 +1,6 @@
 <?php
 
-class Secret extends Controller {
+class SecretController extends Controller {
 
     public function index() {		
       $this->view('secret/index');
