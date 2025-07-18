@@ -1,6 +1,6 @@
 <?php
 
-class Movie {
+class MovieModel {
     private $db;
 
     public function __construct() {

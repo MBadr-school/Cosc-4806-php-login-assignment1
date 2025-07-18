@@ -2,9 +2,9 @@
 
 require_once 'app/services/OmdbService.php';
 require_once 'app/services/GeminiService.php';
-require_once 'app/models/Movie.php';
+require_once 'app/models/movie.php';
 
-class Movie extends Controller {
+class MovieController extends Controller {
     private $omdbService;
     private $geminiService;
     private $movieModel;
@@ -12,7 +12,7 @@ class Movie extends Controller {
     public function __construct() {
         $this->omdbService = new OmdbService();
         $this->geminiService = new GeminiService();
-        $this->movieModel = new Movie();
+        $this->movieModel = new MovieModel();
     }
 
     /**
@@ -57,7 +57,7 @@ class Movie extends Controller {
                     foreach ($results['Search'] as &$movie) {
                         $movieStats = $this->movieModel->getMovieRatingStats($movie['imdbID']);
                         $movie['rating_stats'] = $movieStats;
-                        $movie['user_rating'] = $this->movieModel->getUserRating($movie['imdbID'], Movie::getUserIp());
+                        $movie['user_rating'] = $this->movieModel->getUserRating($movie['imdbID'], MovieModel::getUserIp());
                     }
                 }
 
@@ -90,7 +90,7 @@ class Movie extends Controller {
                 // Add rating data
                 $movie['rating_stats'] = $this->movieModel->getMovieRatingStats($imdbId);
                 $movie['rating_distribution'] = $this->movieModel->getRatingDistribution($imdbId);
-                $movie['user_rating'] = $this->movieModel->getUserRating($imdbId, Movie::getUserIp());
+                $movie['user_rating'] = $this->movieModel->getUserRating($imdbId, MovieModel::getUserIp());
 
                 echo json_encode($movie);
             } else {
@@ -114,7 +114,7 @@ class Movie extends Controller {
 
         $imdbId = $_POST['imdb_id'];
         $rating = intval($_POST['rating']);
-        $userIp = Movie::getUserIp();
+        $userIp = MovieModel::getUserIp();
 
         if ($rating < 1 || $rating > 5) {
             echo json_encode(['error' => 'Rating must be between 1 and 5']);
@@ -156,7 +156,7 @@ class Movie extends Controller {
         }
 
         $imdbId = $_POST['imdb_id'];
-        $userIp = Movie::getUserIp();
+        $userIp = MovieModel::getUserIp();
 
         // Check rate limiting
         if (!$this->movieModel->canRequestReview($userIp)) {

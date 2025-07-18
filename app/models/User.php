@@ -42,7 +42,7 @@ class User {
       } else {
         $_SESSION['failedAuth'] = 1;
       }
-      header('Location: /login');
+      header('Location: /movie');
       die;
     }
     }
