@@ -13,9 +13,13 @@ define('CONTROLLERS', ROOT . DS . 'controllers');
 define('LOGS', ROOT . DS . 'logs');	
 define('FILES', ROOT . DS. 'files');
 
-// ---------------------  NEW DATABASE TABLE -------------------------
-define('DB_HOST',         '72nfd.h.filess.io');
-define('DB_USER',         'cosc4806A3_government'); 
-define('DB_PASS',         $_ENV['DB_PASS']);
-define('DB_DATABASE',     'cosc4806A3_government');
-define('DB_PORT',         '61000');
+// ---------------------  MOVIE DATABASE CONFIGURATION -------------------------
+define('DB_HOST',         'hyek7.h.filess.io');
+define('DB_USER',         'COSC4806_anywherein'); 
+define('DB_PASS',         'daeeaf1f468745cc29a9a0464041eeb4f389855b');
+define('DB_DATABASE',     'COSC4806_anywherein');
+define('DB_PORT',         '3305');
+
+// API Keys
+define('OMDB_API_KEY',    '5be702cb');
+define('GEMINI_API_KEY',  'AIzaSyDokyitV6iiy9hqiQCX2L6qLhd5Ji72-vU');
